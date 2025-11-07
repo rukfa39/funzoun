@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ofbmedia funzoun — Fun & Entertainment App</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+
+  <!-- AOS for subtle animations -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0f1724;
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.06);
+      --accent: #00bcd4;
+      --accent-2: #0066ff;
+      --text: #e6eef8;
+      --muted: #a8b3c7;
+      --glass-border: rgba(255,255,255,0.08);
+      --blur: 12px;
+    }
+    [data-theme="light"]{
+      --bg: #f6fbff;
+      --card: rgba(255,255,255,0.8);
+      --glass: rgba(255,255,255,0.6);
+      --accent: #007bff;
+      --accent-2: #00a3d8;
+      --text: #0b1220;
+      --muted: #4b5563;
+      --glass-border: rgba(255,255,255,0.6);
+      --blur: 8px;
+    }
+
+    *{box-sizing: border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,188,212,0.06), transparent 6%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(0,102,255,0.06), transparent 8%),
+                  var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* canvas (particles) fills header area */
+    #particle-canvas{
+      position: absolute;
+      left:0;top:0;
+      width:100%;
+      height:520px;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    /* Page container */
+    .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:24px;}
+
+    /* Top controls */
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;padding:18px 0;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;
+    }
+    .logo{
+      width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:18px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.25);
+    }
+    .brand h3{margin:0;font-size:1.05rem;}
+
+    .controls{display:flex;gap:10px;align-items:center;}
+    .control-btn{
+      background:transparent;border:1px solid rgba(255,255,255,0.08);
+      padding:8px 12px;border-radius:10px;color:var(--text);cursor:pointer;font-weight:600;
+      backdrop-filter: blur(var(--blur)); box-shadow: 0 4px 12px rgba(2,6,23,0.35);
+    }
+    .control-btn .fa{margin-right:8px}
+
+    /* Hero */
+    header.hero{
+      position:relative;padding:64px 0 48px;overflow:visible;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .hero-inner{display:flex;gap:40px;align-items:center;width:100%;max-width:1100px;}
+    .hero-left{flex:1;min-width:260px}
+    .hero-right{flex:1;display:flex;align-items:center;justify-content:center;min-width:260px}
+
+    .kicker{display:inline-block;padding:6px 12px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:700;margin-bottom:18px;font-size:0.9rem}
+    .hero-title{font-size:2.4rem;line-height:1.05;margin-bottom:12px}
+    .hero-desc{color:var(--muted);margin-bottom:22px;font-size:1rem;max-width:520px}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+
+    .cta-primary{
+      background:linear-gradient(90deg,var(--accent-2),var(--accent));
+      color:white;padding:12px 18px;border-radius:14px;border:none;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,0.2);
+      display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+    }
+    .cta-secondary{
+      background:transparent;border:1px solid rgba(255,255,255,0.08);color:var(--text);padding:12px 16px;border-radius:12px;font-weight:600;text-decoration:none;
+      display:inline-flex;align-items:center;gap:10px;
+      backdrop-filter: blur(var(--blur));
+    }
+
+    /* glass card mockup */
+    .mockup-card{
+      width:260px;height:520px;border-radius:36px;position:relative;
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid var(--glass-border);
+      box-shadow: 0 20px 40px rgba(2,6,23,0.6);
+      display:flex;flex-direction:column;align-items:center;padding:18px;backdrop-filter: blur(10px);
+    }
+    .mockup-screen{width:220px;height:420px;border-radius:22px;background:linear-gradient(180deg,#111111, #0d2b3a);overflow:hidden;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    .mockup-footer{margin-top:12px;font-size:0.85rem;color:var(--muted)}
+
+    /* Features (glass grid) */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:40px}
+    .fcard{
+      border-radius:16px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);backdrop-filter: blur(var(--blur));box-shadow:0 12px 30px rgba(3,10,26,0.5)
+    }
+    .fcard h4{margin:0 0 8px 0}
+    .fcard p{margin:0;color:var(--muted);font-size:0.95rem}
+
+    /* Screenshots slider */
+    .s-slider{margin-top:28px;display:flex;align-items:center;gap:10px}
+    .s-track{display:flex;gap:14px;overflow:hidden;padding:6px;scroll-behavior:smooth}
+    .s-item{min-width:160px;border-radius:16px;background:#fff;height:320px;flex:0 0 auto;box-shadow:0 10px 30px rgba(2,6,23,0.5);overflow:hidden}
+    .s-item img{width:100%;height:100%;object-fit:cover;display:block}
+
+    /* Testimonials */
+    .testimonials{display:flex;flex-wrap:wrap;gap:16px;margin-top:22px}
+    .tcard{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:16px;border:1px solid var(--glass-border);width:320px}
+    .tcard p{color:var(--muted);font-size:0.95rem}
+
+    /* Footer */
+    footer.sitefoot{margin-top:46px;padding:28px;border-top:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;align-items:center;gap:8px}
+    footer small{color:var(--muted)}
+
+    /* Toggles */
+    .toggle{
+      display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04)
+    }
+    .switch{width:46px;height:26px;background:rgba(255,255,255,0.06);border-radius:20px;position:relative;cursor:pointer}
+    .switch .dot{position:absolute;width:20px;height:20px;border-radius:50%;background:white;top:3px;left:3px;transition:all 0.22s ease}
+
+    [data-theme="light"] .switch{background: rgba(0,0,0,0.06)}
+    [data-theme="light"] .switch .dot{left:23px}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .hero-inner{flex-direction:column-reverse;gap:26px}
+      .mockup-card{width:220px;height:460px}
+      #particle-canvas{height:420px}
+    }
+    @media (max-width:480px){
+      .hero-title{font-size:1.5rem}
+      .kicker{font-size:0.8rem}
+      .s-item{min-width:140px;height:260px}
+      .s-track{gap:10px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PARTICLE CANVAS -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- MAIN WRAPPER -->
+  <div class="wrap" id="app">
+
+    <!-- TOP BAR: Brand + Controls -->
+    <div class="topbar" data-aos="fade-down">
+      <div class="brand">
+        <div class="logo">OF</div>
+        <div>
+          <h3>ofbmedia funzoun</h3>
+          <div style="font-size:0.82rem;color:var(--muted)">Fun & Entertainment App</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <!-- Language Toggle -->
+        <div class="toggle" title="Language">
+          <button id="langBtn" class="control-btn" aria-label="Toggle language">বাংলা</button>
+        </div>
+
+        <!-- Theme Switch -->
+        <div class="toggle" title="Light / Dark">
+          <div style="font-size:0.9rem;color:var(--muted);margin-right:6px" id="themeLabel">Dark</div>
+          <div class="switch" id="themeSwitch" role="switch" aria-checked="false">
+            <div class="dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <header class="hero" role="banner">
+      <div class="hero-inner" >
+        <div class="hero-left" >
+          <div class="kicker" id="kicker">New Release</div>
+          <h1 class="hero-title" id="heroTitle">ofbmedia funzoun — Fun & Entertainment App</h1>
+          <p class="hero-desc" id="heroDesc">একটি বিনোদন ও মজা ভরা অ্যাপ — গেম, ভিডিও, কুইজ, ট্রেন্ড এবং আরও অনেক কিছু।</p>
+
+          <div class="cta-row" >
+            <a id="playBtn" href="#" class="cta-primary" title="Download on Play Store">
+              <i class="fab fa-google-play"></i><span id="playText">Download on Play Store</span>
+            </a>
+            <a id="storeBtn" href="#" class="cta-secondary" title="Download on App Store">
+              <i class="fab fa-apple"></i><span id="storeText">App Store</span>
+            </a>
+          </div>
+
+          <!-- Quick feature mini-row -->
+          <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+            <div class="control-btn" style="display:flex;gap:8px;align-items:center"><i class="fa fa-star"></i><span id="stat1">5000+ Downloads</span></div>
+            <div class="control-btn" style="display:flex;gap:8px;align-items:center"><i class="fa fa-clock"></i><span id="stat2">Daily Updates</span></div>
+          </div>
+        </div>
+
+        <!-- Mockup on right -->
+        <div class="hero-right" data-aos="zoom-in">
+          <div class="mockup-card" role="img" aria-label="App mockup">
+            <div class="mockup-screen" id="mockScreen">
+              <!-- Placeholder: You can replace with animated screenshot or video -->
+              <div style="text-align:center">
+                <div style="font-size:1.1rem">ofbmedia</div>
+                <div style="font-size:0.9rem;margin-top:6px;color:#dbeeff">funzoun</div>
+              </div>
+            </div>
+            <div class="mockup-footer" id="mockFooter">Preview • Smooth • Fast</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features grid -->
+    </header>
+
+    <!-- FEATURES -->
+    <section aria-labelledby="featuresTitle">
+      <div class="wrap" style="max-width:1000px;">
+        <h2 id="featuresTitle" data-aos="fade-up">Key Features</h2>
+        <div class="features" data-aos="fade-up" data-aos-delay="120">
+          <div class="fcard" data-aos="flip-left">
+            <h4>🎮 মিনি গেমস</h4>
+            <p>হালকা, মজার ও কল্পনাপ্রসূত মিনি গেম — দ্রুত খেলা ও মজা পাওয়া যাবে।</p>
+          </div>
+          <div class="fcard" data-aos="flip-left" data-aos-delay="60">
+            <h4>🎧 ভিডিও & মিউজিক</h4>
+            <p>ট্রেন্ডিং ভিডিও, শর্ট কনটেন্ট ও মিউজিক এক জায়গায়।</p>
+          </div>
+          <div class="fcard" data-aos="flip-left" data-aos-delay="120">
+            <h4>📰 ট্রেন্ডিং নিউজ</h4>
+            <p>দৈনিক ফান-টপিকস ও লাইটনেস নিউজ আপডেট।</p>
+          </div>
+          <div class="fcard" data-aos="flip-left" data-aos-delay="180">
+            <h4>🔔 রিয়েল-টাইম নোটিফিকেশন</h4>
+            <p>আপডেট, অফার ও জরুরি বিলবোর্ড — সঙ্গে সঙ্গে নোটিফাই।</p>
+          </div>
+        </div>
+
+        <!-- Screenshots slider -->
+        <h3 style="margin-top:34px" data-aos="fade-up">Screenshots</h3>
+        <div class="s-slider" data-aos="fade-up" data-aos-delay="60">
+          <button id="s-prev" class="control-btn" aria-label="Previous screenshot"><i class="fa fa-chevron-left"></i></button>
+          <div class="s-track" id="sTrack" role="list">
+            <!-- Replace src with real screenshots -->
+            <div class="s-item" role="listitem"><img src="https://via.placeholder.com/400x800?text=Screen+1" alt="Screenshot 1"></div>
+            <div class="s-item" role="listitem"><img src="https://via.placeholder.com/400x800?text=Screen+2" alt="Screenshot 2"></div>
+            <div class="s-item" role="listitem"><img src="https://via.placeholder.com/400x800?text=Screen+3" alt="Screenshot 3"></div>
+            <div class="s-item" role="listitem"><img src="https://via.placeholder.com/400x800?text=Screen+4" alt="Screenshot 4"></div>
+          </div>
+          <button id="s-next" class="control-btn" aria-label="Next screenshot"><i class="fa fa-chevron-right"></i></button>
+        </div>
+
+        <!-- Testimonials -->
+        <h3 style="margin-top:34px" data-aos="fade-up">What Users Say</h3>
+        <div class="testimonials" data-aos="fade-up" data-aos-delay="80">
+          <div class="tcard">
+            <strong>রিয়াজ</strong>
+            <p>“গেমগুলো মজার, আর ইন্টারফেস অনেক মসৃণ।”</p>
+          </div>
+          <div class="tcard">
+            <strong>Tamanna</strong>
+            <p>“Love the short videos — daily updates keep me coming back.”</p>
+          </div>
+        </div>
+
+        <!-- Contact quick -->
+        <div style="display:flex;gap:12px;align-items:center;margin-top:30px;flex-wrap:wrap" data-aos="fade-up" data-aos-delay="120">
+          <a href="tel:01776622261" class="control-btn"><i class="fa fa-phone"></i> 01776-622261</a>
+          <a href="mailto:support@ofbmedia.com" class="control-btn"><i class="fa fa-envelope"></i> support@ofbmedia.com</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="sitefoot" data-aos="fade-up">
+      <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;justify-content:center">
+        <div>
+          <strong>Address</strong>
+          <div style="color:var(--muted)">মর্তুজা টাওয়ার (২য় তলা), তাকিয়া রোড, সোনাগাজী, ফেনী</div>
+        </div>
+        <div>
+          <strong>Follow</strong>
+          <div style="display:flex;gap:10px;margin-top:6px">
+            <a href="#" aria-label="facebook" style="color:var(--text)"><i class="fab fa-facebook fa-lg"></i></a>
+            <a href="#" aria-label="youtube" style="color:var(--text)"><i class="fab fa-youtube fa-lg"></i></a>
+            <a href="#" aria-label="instagram" style="color:var(--text)"><i class="fab fa-instagram fa-lg"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <small>© <span id="year"></span> ofbmedia funzoun • All rights reserved.</small>
+    </footer>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // Init AOS
+    AOS.init({duration:900, once:true, disable: 'phone'});
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /************** Theme (Dark/Light) **************/
+    const themeSwitch = document.getElementById('themeSwitch');
+    const themeLabel = document.getElementById('themeLabel');
+    const root = document.documentElement;
+
+    // load saved theme or system preference
+    const savedTheme = localStorage.getItem('ofb_theme');
+    if(savedTheme) root.setAttribute('data-theme', savedTheme);
+    else {
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      root.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+    }
+    updateThemeUI();
+
+    themeSwitch.addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', cur);
+      localStorage.setItem('ofb_theme', cur);
+      updateThemeUI();
+    });
+
+    function updateThemeUI(){
+      const isLight = root.getAttribute('data-theme') === 'light';
+      themeLabel.textContent = isLight ? 'Light' : 'Dark';
+      // move dot:
+      const dot = themeSwitch.querySelector('.dot');
+      if(dot) dot.style.left = isLight ? '23px' : '3px';
+      themeSwitch.setAttribute('aria-checked', isLight);
+    }
+
+    /************** Language Toggle (Bangla / English) **************/
+    const langBtn = document.getElementById('langBtn');
+    const texts = {
+      bn: {
+        kicker: 'নতুন রিলিজ',
+        title: 'ofbmedia funzoun — বিনোদন অ্যাপ',
+        desc: 'একটি বিনোদন ও মজা ভরা অ্যাপ — গেম, ভিডিও, কুইজ, ট্রেন্ড এবং আরও অনেক কিছু।',
+        play: 'প্লে স্টোরে ডাউনলোড',
+        store: 'অ্যাপ স্টোর',
+        stat1: '৫০০০+ ডাউনলোড',
+        stat2: 'দৈনিক আপডেট',
+        featuresTitle: 'মূল ফিচার',
+        screenshots: 'স্ক্রিনশট',
+        testimonials: 'ব্যবহারকারীর মতামত'
+      },
+      en: {
+        kicker: 'New Release',
+        title: 'ofbmedia funzoun — Fun & Entertainment App',
+        desc: 'An entertainment-packed app — games, videos, quizzes, trends and more.',
+        play: 'Download on Play Store',
+        store: 'App Store',
+        stat1: '5000+ Downloads',
+        stat2: 'Daily Updates',
+        featuresTitle: 'Key Features',
+        screenshots: 'Screenshots',
+        testimonials: 'What Users Say'
+      }
+    };
+
+    // load saved language
+    let lang = localStorage.getItem('ofb_lang') || 'bn';
+    applyLang(lang);
+
+    langBtn.addEventListener('click', () => {
+      lang = lang === 'bn' ? 'en' : 'bn';
+      localStorage.setItem('ofb_lang', lang);
+      applyLang(lang);
+    });
+
+    function applyLang(l){
+      const t = texts[l];
+      document.getElementById('kicker').textContent = t.kicker;
+      document.getElementById('heroTitle').textContent = t.title;
+      document.getElementById('heroDesc').textContent = t.desc;
+      document.getElementById('playText').textContent = t.play;
+      document.getElementById('storeText').textContent = t.store;
+      document.getElementById('stat1').textContent = t.stat1;
+      document.getElementById('stat2').textContent = t.stat2;
+      // Update lang button label (shows next language to switch to)
+      langBtn.textContent = l === 'bn' ? 'বাংলা' : 'English';
+    }
+
+    /************** Screenshot slider controls **************/
+    const sTrack = document.getElementById('sTrack');
+    const sPrev = document.getElementById('s-prev');
+    const sNext = document.getElementById('s-next');
+
+    sPrev.addEventListener('click', () => {
+      sTrack.scrollBy({left: -200, behavior: 'smooth'});
+    });
+    sNext.addEventListener('click', () => {
+      sTrack.scrollBy({left: 200, behavior: 'smooth'});
+    });
+
+    // Optional: autoplay slider
+    let sliderTimer = setInterval(()=>{ sTrack.scrollBy({left:200, behavior:'smooth'}) }, 3000);
+    sTrack.addEventListener('mouseenter', ()=>clearInterval(sliderTimer));
+    sTrack.addEventListener('mouseleave', ()=>sliderTimer = setInterval(()=>{ sTrack.scrollBy({left:200, behavior:'smooth'}) }, 3000));
+
+    /************** PARTICLE CANVAS (simple bubble effect) **************/
+    (function(){
+      const canvas = document.getElementById('particle-canvas');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = Math.min(520, window.innerHeight * 0.6);
+
+      const particles = [];
+      const count = Math.round(window.innerWidth / 40); // responsive count
+
+      function rand(min,max){ return Math.random()*(max-min)+min }
+
+      class P {
+        constructor(){
+          this.reset();
+        }
+        reset(){
+          this.x = rand(0,w);
+          this.y = rand(h*0.2,h);
+          this.r = rand(2,12);
+          this.vx = rand(-0.2,0.8);
+          this.vy = rand(-0.25, -0.8); // gentle up
+          this.alpha = rand(0.08,0.4);
+          this.hue = rand(180,220);
+          this.sat = rand(40,80);
+          this.life = rand(600,1400);
+        }
+        step(){
+          this.x += this.vx;
+          this.y += this.vy;
+          this.life--;
+          if(this.life < 0 || this.y < -50 || this.x < -50 || this.x > w+50) this.reset();
+        }
+        draw(){
+          ctx.beginPath();
+          ctx.fillStyle = `hsla(${this.hue}, ${this.sat}%, 60%, ${this.alpha})`;
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+
+      function init(){
+        particles.length = 0;
+        for(let i=0;i<count;i++) particles.push(new P());
+      }
+
+      function onResize(){
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = Math.min(520, window.innerHeight * 0.6);
+        init();
+      }
+      window.addEventListener('resize', onResize);
+
+      function frame(){
+        ctx.clearRect(0,0,w,h);
+        const g = ctx.createLinearGradient(0,0,0,h);
+        g.addColorStop(0, 'rgba(255,255,255,0.01)');
+        g.addColorStop(1, 'rgba(0,0,0,0.02)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0,0,w,h);
+
+        for(let p of particles){ p.step(); p.draw(); }
+        requestAnimationFrame(frame);
+      }
+
+      init();
+      frame();
+    })();
+
+    /************** PLAY & STORE LINKS **************/
+    document.getElementById('playBtn').href = "https://play.google.com/store/apps/details?id=com.ofbmedia.funzoun";
+    document.getElementById('storeBtn').href = "#";
+
+    /************** Accessibility: keyboard toggles **************/
+    themeSwitch.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); themeSwitch.click(); }
+    });
+    langBtn.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); langBtn.click(); }
+    });
+
+  </script>
+</body>
+</html>
