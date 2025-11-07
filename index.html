@@ -8,15 +8,19 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
   <!-- AOS Animation -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #f2f2f2;
-      --text: #222;
+      --bg: #f3f4f6;
+      --text: #111827;
       --primary: #007BFF;
       --accent: #00E5FF;
+      --gradient: linear-gradient(135deg, #007BFF, #00E5FF);
     }
 
     * {
@@ -26,80 +30,168 @@
     }
 
     body {
-      background: var(--bg);
       font-family: 'Poppins', sans-serif;
+      background: var(--bg);
       color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
       overflow-x: hidden;
     }
 
+    /* 🔹 Navbar */
+    nav {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    nav img {
+      width: 120px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: var(--primary);
+    }
+
+    /* 🔹 Hero Section */
     header {
-      padding: 40px 20px;
-      animation: fadeInDown 1.2s ease-out;
+      text-align: center;
+      padding: 160px 20px 80px;
     }
 
     header img {
       width: 220px;
-      max-width: 90%;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-      animation: glowPulse 3s infinite alternate;
+      border-radius: 18px;
+      animation: glow 2s infinite alternate;
     }
 
-    h1 {
-      font-size: 2rem;
-      margin-top: 20px;
-      color: #007BFF;
-      font-weight: 600;
-    }
-
-    p {
-      margin-top: 10px;
-      font-size: 1rem;
-      color: #555;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 0.85rem;
-      color: #777;
-    }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes glowPulse {
+    @keyframes glow {
       from { box-shadow: 0 0 10px rgba(0, 123, 255, 0.4); }
       to { box-shadow: 0 0 30px rgba(0, 229, 255, 0.7); }
+    }
+
+    header h1 {
+      margin-top: 20px;
+      font-size: 2.2rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: #444;
+      margin: 10px 0 30px;
+      font-size: 1.1rem;
+    }
+
+    .cta-btn {
+      background: var(--gradient);
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,123,255,0.4);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(0,123,255,0.5);
+    }
+
+    /* 🔹 Social Icons */
+    .social {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .social a {
+      font-size: 1.5rem;
+      color: var(--primary);
+      transition: 0.3s;
+    }
+
+    .social a:hover {
+      color: var(--accent);
+      transform: scale(1.2);
+    }
+
+    /* 🔹 Footer */
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: #555;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 
 <body>
+  <!-- 🔹 Navbar -->
+  <nav>
+    <img src="ofbmedia_logo.png" alt="ofb media logo">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- 🔹 Hero Section -->
   <header>
-    <img src="ofbmedia_logo.png" alt="OFB Media Logo" data-aos="fade-up" />
-    <h1 data-aos="zoom-in">Welcome to <span style="color: var(--accent)">ofb media</span></h1>
+    <img src="ofbmedia_logo.png" alt="ofb media logo" data-aos="fade-up" />
+    <h1 data-aos="zoom-in">Welcome to <strong>ofb media</strong></h1>
     <p data-aos="fade-up">Create • Inspire • Grow — Where creativity meets technology 🌐</p>
+    <a href="#" class="cta-btn" data-aos="fade-up">Get Started</a>
+
+    <!-- Social Media Icons -->
+    <div class="social" data-aos="fade-up">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
   </header>
 
+  <!-- 🔹 Footer -->
   <footer>
     © 2025 ofb media — All rights reserved.
   </footer>
 
-  <!-- AOS Animation Script -->
+  <!-- AOS Animation -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init();
   </script>
 </body>
 </html>
+
 
 
