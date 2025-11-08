@@ -6,24 +6,34 @@
   <title>Privacy Policy — Quick Note by ofb media</title>
 
   <meta name="description" content="Privacy Policy for Quick Note App by ofb media. Learn how we collect, use, and protect your information." />
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#007bff" />
   <link rel="icon" type="image/png" href="ofbmedia_logo.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: #f9fafb;
+      background: #ffffff;
       color: #111827;
-      line-height: 1.8;
       margin: 0;
       padding: 0;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
     }
 
     header {
-      background: #007bff;
+      text-align: center;
+      background: linear-gradient(135deg, #007bff, #00e5ff);
       color: white;
       padding: 40px 20px;
-      text-align: center;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     header h1 {
@@ -31,77 +41,85 @@
       margin-bottom: 10px;
     }
 
-    main {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    header p {
+      font-size: 1rem;
+      opacity: 0.9;
     }
 
     h2 {
       color: #007bff;
-      margin-top: 30px;
+      margin-top: 40px;
+      font-size: 1.3rem;
     }
+
+    ul { margin-left: 20px; }
 
     footer {
       text-align: center;
-      padding: 30px;
+      padding: 30px 0;
       color: #555;
       font-size: 0.9rem;
+      background: #f3f4f6;
+      margin-top: 60px;
+      border-top: 1px solid #ddd;
     }
 
-    a {
+    footer a {
       color: #007bff;
       text-decoration: none;
     }
 
-    a:hover {
+    footer a:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 15px; }
+      header h1 { font-size: 1.6rem; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Privacy Policy</h1>
-  <p>Quick Note — by ofb media</p>
-</header>
+  <header>
+    <h1>Privacy Policy</h1>
+    <p>Quick Note — by ofb media</p>
+  </header>
 
-<main>
-  <p>Effective Date: <b>November 2025</b></p>
+  <div class="container">
+    <p><strong>Effective Date:</strong> November 2025</p>
 
-  <h2>1. Information Collection and Use</h2>
-  <p>Quick Note does not collect personal data without your consent. The app may request storage or microphone access for note-saving and voice input features. These permissions are used only for app functionality and never stored or shared externally.</p>
+    <h2>1. Information Collection and Use</h2>
+    <p>Quick Note does not collect any personal information from users without explicit consent. The app may ask for permissions (such as storage or microphone access) purely to enable app features like saving notes or using voice input. No data is transmitted to our servers.</p>
 
-  <h2>2. Permissions Used</h2>
-  <ul>
-    <li><b>Storage:</b> To save, edit, and manage your notes locally.</li>
-    <li><b>Microphone:</b> To convert your speech into text using voice input.</li>
-    <li><b>Internet:</b> For backup and synchronization (if enabled).</li>
-  </ul>
+    <h2>2. Permissions Used</h2>
+    <ul>
+      <li><b>Storage:</b> Used to store your notes locally on your device.</li>
+      <li><b>Microphone:</b> Used for converting speech into text during note creation.</li>
+      <li><b>Internet:</b> Only used when you enable cloud backup or ads.</li>
+    </ul>
 
-  <h2>3. Data Security</h2>
-  <p>All notes are stored securely on your device or Google Drive (if you enable cloud backup). We do not access or share any of your content.</p>
+    <h2>3. Data Security</h2>
+    <p>Your notes and information are stored securely within your device. If you use Google Drive backup, your data is protected by Google’s security systems. We never collect, sell, or share user data.</p>
 
-  <h2>4. Third-Party Services</h2>
-  <p>Our app may include third-party SDKs such as Google AdMob and Firebase Analytics for ads and analytics. These services may collect anonymous usage data as per their policies.</p>
+    <h2>4. Third-Party Services</h2>
+    <p>Quick Note may use third-party SDKs such as Google AdMob (for ads) or Firebase (for analytics). These services may collect anonymous usage statistics in compliance with their respective privacy policies.</p>
 
-  <h2>5. Children's Privacy</h2>
-  <p>Quick Note is not directed toward children under 13. We do not knowingly collect any personal data from minors.</p>
+    <h2>5. Children's Privacy</h2>
+    <p>Quick Note is not directed to children under the age of 13. We do not knowingly collect personal data from minors.</p>
 
-  <h2>6. Changes to This Policy</h2>
-  <p>We may update our Privacy Policy from time to time. Any changes will be posted on this page.</p>
+    <h2>6. Policy Updates</h2>
+    <p>We may update our Privacy Policy occasionally. Any changes will be posted on this page with a revised date.</p>
 
-  <h2>7. Contact Us</h2>
-  <p>If you have any questions about this Privacy Policy, please contact us at:  
-  <b>ofbmediaofficial@gmail.com</b></p>
-</main>
+    <h2>7. Contact Us</h2>
+    <p>If you have any questions or concerns about our Privacy Policy, please contact us:</p>
+    <p><b>Email:</b> <a href="mailto:ofbmediaofficial@gmail.com">ofbmediaofficial@gmail.com</a></p>
+  </div>
 
-<footer>
-  © 2025 ofb media — All Rights Reserved.
-</footer>
-
+  <footer>
+    © 2025 ofb media — All Rights Reserved.  
+    <br><a href="index.html">Back to Home</a>
+  </footer>
 </body>
 </html>
+
